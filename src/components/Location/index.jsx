@@ -1,7 +1,7 @@
-export default function Location(){
+export default function Location({locationName}){
     return(
         <div style={{marginTop:'1rem'}}>
-            <a style={{fontSize:'2rem'}}>台北市</a>
+            <a style={{fontSize:'2rem'}}>{locationName}</a>
         </div>
     );
 }

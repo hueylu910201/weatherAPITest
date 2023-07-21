@@ -1,7 +1,7 @@
-export default function Description(){
+export default function Description({description}){
     return(
         <div>
-            <p style={{fontSize:'1rem'}}>多雲時晴</p>
+            <p style={{fontSize:'1rem'}}>{description}</p>
         </div>
     );
 }

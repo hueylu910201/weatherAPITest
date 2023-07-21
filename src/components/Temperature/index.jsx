@@ -1,7 +1,7 @@
-export default function Temperature(){
+export default function Temperature({temperature}){
     return(
         <div>
-            <a style={{fontSize:'10rem'}}>23 <a style={{fontSize:'5rem'}}>°C</a></a>
+            <div style={{fontSize:'10rem'}}>{Math.round(temperature)} <a style={{fontSize:'5rem'}}>°C</a></div>
         </div>
     );
 }
