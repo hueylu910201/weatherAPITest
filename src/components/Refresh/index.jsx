@@ -1,15 +1,20 @@
-import image from "../../images/refresh.svg"
+import refreshImage from "../../images/refresh.svg"
+import loadingImage from "../../images/loading.svg"
 import dayjs from "dayjs";
+import styles from "../Refresh/refresh.module.css"
 
-const AUTHORIZATION_KEY = 'CWB-40EFFA73-D689-432D-8A8F-5D83629F0C1F';
-const LOCATION_NAME = '臺北';
-
-export default function Refresh({ observationTime }) {
-
+export default function Refresh({ observationTime, loading }) {
+    const img = {
+        name: loading ? 'loadingImage' : 'refreshImage',
+    };
 
     return (
         <div style={{ display: 'flex' }}>
-            <img src={image} alt="refresh" style={{ width: '1.2rem', marginLeft: '1rem' }} />
+
+            <img src={img.name === 'loadingImage' ? loadingImage : refreshImage} alt="refresh"
+                className={img.name === 'loadingImage' ?styles.loadingImage:styles.refreshImage}
+            />
+            
             <p>最後更新時間: {new Intl.DateTimeFormat('zh-TW', {
                 hour: 'numeric',
                 minute: 'numeric',

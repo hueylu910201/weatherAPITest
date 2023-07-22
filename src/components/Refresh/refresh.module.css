@@ -1,0 +1,18 @@
+@keyframes rotate {
+    from{
+        transform: rotate(360deg);
+    }
+    to{
+        transform: rotate(0deg);
+    }
+}
+
+.refreshImage{
+    width: 1.2rem;
+    margin-left: 1rem;
+}
+.loadingImage{
+    width: 1.2rem;
+    margin-left: 1rem;
+    animation: rotate infinite 1.5s linear;
+}
