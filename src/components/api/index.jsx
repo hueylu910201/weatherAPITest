@@ -1,10 +1,9 @@
-const AUTHORIZATION_KEY = 'CWB-40EFFA73-D689-432D-8A8F-5D83629F0C1F';
-const LOCATION_NAME = '臺北';
-const LOCATION_NAME_FORECAST = '臺北市';
+import { useEffect,useState,useCallback } from "react";
 
-const fetchCurrentWeather = () => {
+
+const fetchCurrentWeather = ({ locationName , authorizationKey }) => {
     
-    return fetch(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=${AUTHORIZATION_KEY}&locationName=${LOCATION_NAME} `)
+    return fetch(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=${authorizationKey}&locationName=${locationName} `)
         .then((response) => response.json())
         .then((data) => {
             console.log('data', data);
@@ -29,9 +28,9 @@ const fetchCurrentWeather = () => {
 
 };
 
-const fetchWeatherForecast = () => {
+const fetchWeatherForecast = ({ cityName , authorizationKey }) => {
 
-    return fetch(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${AUTHORIZATION_KEY}&locationName=${LOCATION_NAME_FORECAST}
+    return fetch(`https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${authorizationKey}&locationName=${cityName}
     `)
         .then((response) => response.json())
         .then((data) => {
@@ -56,4 +55,43 @@ const fetchWeatherForecast = () => {
 
 };
 
-export {fetchCurrentWeather,fetchWeatherForecast} ;
+const useWeatherAPI=({ locationName , cityName , authorizationKey })=>{
+    const [weatherElement, setWeatherElement] = useState({
+        locationName: ' ',
+        description: ' ',
+        windSpeed: 0,
+        temperature: 0,
+        rainPossibility: 0,
+        observationTime: new Date(),
+        comfortability: ' ',
+        weatherCode: 0,
+        isLoading: true,
+
+    });
+
+    const fetchData = useCallback(async () => {
+        setWeatherElement((prevState) => ({
+            ...prevState,
+            isLoading: true,
+        }))
+
+        const [currentWeather, weatherForecast] = await Promise.all
+            ([fetchCurrentWeather({ locationName , authorizationKey }), fetchWeatherForecast({ cityName , authorizationKey })]);
+
+        setWeatherElement({
+            ...currentWeather,
+            ...weatherForecast,
+            isLoading: false,
+        });
+    }, [locationName , cityName , authorizationKey]);
+
+    useEffect(() => {
+        console.log('execute function in useEffect');
+        fetchData();
+
+    }, [fetchData]);
+
+    return [weatherElement,fetchData];
+}
+
+export default useWeatherAPI;
